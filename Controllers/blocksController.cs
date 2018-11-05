@@ -146,14 +146,17 @@ namespace demoWebAdmin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             listBlock = db.blocks.ToList();
-            for (int i =id; i <= listBlock.Count(); i++)
+            if (isValidBlockChain(listBlock, listBlock[listBlock.Count - 1].hash) != -1)
             {
-             block bl = db.blocks.Find(id + 1);
-            if(bl != null)
-            {
-              db.Entry(bl).State = EntityState.Modified;
-              bl.status = false;
-            }
+                for (int i = id; i <= listBlock.Count(); i++)
+                {
+                    block bl = db.blocks.Find(i + 1);
+                    if (bl != null)
+                    {
+                        db.Entry(bl).State = EntityState.Modified;
+                        bl.status = false;
+                    }
+                }
             }
             block block = db.blocks.Find(id);
             db.blocks.Remove(block);
